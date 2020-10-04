@@ -4,7 +4,7 @@ import { FontAwesome } from '@expo/vector-icons';
 const listItems = [{id:1,title:"Quorn Bolognese",selected:false},
                    {id:2,title:"Butternut squash, barley, broccoli",selected:true},
                    {id:3,title:"Pasta with Caponata",selected:true}]
-
+import {spacing} from '../style/constants'
 
 export const ListItems = (props) => {
     return listItems
@@ -12,8 +12,8 @@ export const ListItems = (props) => {
         .map(item=>
               <View style={styles.container} key={item.id}>
               {item.selected ?
-               <FontAwesome name="circle" size={24} color="black" />:
-               <FontAwesome name="circle-o" size={24} color="black" /> }
+               <FontAwesome style={styles.icon} name="circle" size={24} color="black" />:
+               <FontAwesome style={styles.icon} name="circle-o" size={24} color="black" /> }
               <Text>{item.title}</Text>
               </View>)
 }
@@ -25,5 +25,9 @@ const styles = StyleSheet.create({
         backgroundColor:'pink',
         alignItems: 'center',
         justifyContent: 'flex-start',
+        padding:spacing.sp2
     },
+    icon: {
+       marginRight:spacing.sp2
+    }
 });
