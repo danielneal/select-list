@@ -1,33 +1,41 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, FlatList, Text, View, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-const listItems = [{id:1,title:"Quorn Bolognese",selected:false},
-                   {id:2,title:"Butternut squash, barley, broccoli",selected:true},
-                   {id:3,title:"Pasta with Caponata",selected:true}]
-import {spacing} from '../style/constants'
+import {spacing, fontSize, palette} from '../style/constants'
+
+const ListItem = ({item}) => {
+    return <TouchableOpacity onPress={()=>item.onPress(item.id)} style={styles.itemContainer}>
+        {item.selected ?
+         <FontAwesome style={styles.icon} name="circle" size={24} color="black" /> :
+         <FontAwesome style={styles.icon} name="circle-o" size={24} color="black" /> }
+        <Text style={styles.text}>{item.title}</Text>
+        </TouchableOpacity>
+}
 
 export const ListItems = (props) => {
-    return listItems
-        .filter(item=>item.selected===true||props.selectedOnly===false)
-        .map(item=>
-              <View style={styles.container} key={item.id}>
-              {item.selected ?
-               <FontAwesome style={styles.icon} name="circle" size={24} color="black" />:
-               <FontAwesome style={styles.icon} name="circle-o" size={24} color="black" /> }
-              <Text>{item.title}</Text>
-              </View>)
+    const data=props.items
+                    .filter(item=>item.selected===1||props.selectedOnly===false)
+                    .map((item)=>Object.assign(item,{onPress:props.onPress}))
+    return <FlatList style={styles.flatList} data={data} renderItem={ListItem} keyExtractor={(item) => `list-item-${item.id}`}/>
 }
 
 const styles = StyleSheet.create({
-    container: {
+    flatList: {
+        width:"100%",
+        height:"100%",
+        backgroundColor:palette.brand1
+    },
+    itemContainer: {
         width:"100%",
         flexDirection: 'row',
-        backgroundColor:'pink',
         alignItems: 'center',
         justifyContent: 'flex-start',
         padding:spacing.sp2
     },
     icon: {
        marginRight:spacing.sp2
+    },
+    text: {
+       fontSize:fontSize.f4
     }
 });

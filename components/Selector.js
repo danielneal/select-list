@@ -3,13 +3,12 @@ import { StyleSheet, Text, View, TouchableOpacity} from 'react-native'
 import {spacing, fontSize, palette} from '../style/constants'
 
 export const Selector = (props) => {
-    console.log(props.items)
     return(<View style={styles.container}>
-            {props.items.map(
-                item=>
-                    <TouchableOpacity style={[styles.item,item.id===props.selectedId?styles.selectedItem:{}]} onPress={()=>props.onPress(item.id)}>
-                    <Text style={styles.itemText} key={item.id}>{item.title}</Text>
-                    </TouchableOpacity>)}
+           {props.items
+            .map(item=>
+                 <TouchableOpacity key={item.id} style={[styles.item,item.id===props.selectedId?styles.selectedItem:{}]} onPress={()=>props.onPress(item.id)}>
+                 <Text style={styles.itemText}>{item.title}</Text>
+                 </TouchableOpacity>)}
            </View>)
 }
 
