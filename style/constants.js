@@ -30,5 +30,11 @@ export const fontSize={
 }
 
 export const palette = {
+    ui0:"#000000",
+    ui1:"#333333",
+    ui2:"#666666",
+    ui3:"#999999",
+    ui4:"#BBBBBB",
+    ui5:"#FFFFFF",
     brand1:"pink"
 }

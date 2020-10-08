@@ -4,11 +4,11 @@ import {spacing, fontSize, palette} from '../style/constants'
 
 export const Selector = (props) => {
     return(<View style={styles.container}>
-           {props.items
-            .map(item=>
-                 <TouchableOpacity key={item.id} style={[styles.item,item.id===props.selectedId?styles.selectedItem:{}]} onPress={()=>props.onPress(item.id)}>
-                 <Text style={styles.itemText}>{item.title}</Text>
-                 </TouchableOpacity>)}
+             {props.items
+              .map(item=>
+                   <TouchableOpacity key={item.id} style={[styles.item,item.id===props.selectedId?styles.selectedItem:{}]} onPress={()=>props.onPress(item.id)}>
+                     <Text style={styles.itemText}>{item.title}</Text>
+                   </TouchableOpacity>)}
            </View>)
 }
 
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         backgroundColor:palette.brand1,
     },
     itemText:{
-        fontSize:fontSize.f4
+        fontSize:fontSize.f6
     }
 
 });

@@ -2,9 +2,7 @@ import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase("db.db");
 
 export const migrate = () => {
-    console.log('executing transaction')
     db.transaction(tx => {
-        console.log('creating table')
         tx.executeSql(
             "create table if not exists list_items (id integer primary key not null, selected int, title text);");
     });
@@ -20,5 +18,17 @@ export const getListItems = (callback) => {
 export const toggleItem = (id) => {
     db.transaction(tx => {
         tx.executeSql('update list_items set selected=not selected where id=?',[id])
+    })
+}
+
+export const deleteItem = (id) => {
+    db.transaction(tx => {
+        tx.executeSql('delete from list_items where id=?',[id])
+    })
+}
+
+export const addItem = (text) => {
+    db.transaction(tx => {
+        tx.executeSql('insert into list_items(selected,title) values (1,?)',[text])
     })
 }
