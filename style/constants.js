@@ -36,5 +36,6 @@ export const palette = {
     ui3:"#999999",
     ui4:"#BBBBBB",
     ui5:"#FFFFFF",
-    brand1:"pink"
+    brand1:"#f54298",
+    brand2:"#f5abcf"
 }

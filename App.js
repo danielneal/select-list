@@ -31,7 +31,7 @@ export default function App() {
               <ListItems items={listItems}
                          ref={flatList}
                          selectedOnly={selectedOnly}
-                         onSwipe={(id)=>{
+                         onSwipeRight={(id)=>{
                              db.deleteItem(id);
                              refresh()
                          }}

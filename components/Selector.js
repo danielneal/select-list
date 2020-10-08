@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity} from 'react-native'
-import {spacing, fontSize, palette} from '../style/constants'
+import {spacing, fontSize, palette, borderRadius} from '../style/constants'
 
 export const Selector = (props) => {
     return(<View style={styles.container}>
              {props.items
               .map(item=>
                    <TouchableOpacity key={item.id} style={[styles.item,item.id===props.selectedId?styles.selectedItem:{}]} onPress={()=>props.onPress(item.id)}>
-                     <Text style={styles.itemText}>{item.title}</Text>
+                     <Text style={[styles.itemText,item.id===props.selectedId?styles.selectedItemText:{}]}>{item.title}</Text>
                    </TouchableOpacity>)}
            </View>)
 }
@@ -18,15 +18,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
+        padding:spacing.sp2
     },
     item: {
-        padding:spacing.sp3
+        paddingHorizontal:spacing.sp3,
+        paddingVertical:spacing.sp2,
+        borderRadius:borderRadius.br3
     },
     selectedItem: {
         backgroundColor:palette.brand1,
     },
-    itemText:{
-        fontSize:fontSize.f6
+    itemText: {
+        fontSize:fontSize.f6,
+        color:palette.ui0
+    },
+    selectedItemText:{
+        color:palette.ui5,
     }
 
 });
