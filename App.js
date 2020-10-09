@@ -5,6 +5,7 @@ import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
 import {ListItems} from './components/ListItems'
 import {Selector} from './components/Selector'
 import {NewItem} from './components/NewItem'
+import {usePrevious} from './hooks/usePrevious'
 
 export default function App() {
     const [listItems,setListItems]=useState({});
@@ -15,7 +16,6 @@ export default function App() {
         db.getListItems((items)=>{
             setListItems(items)
         })},[]);
-    console.log(listItems);
     const [selectedOnly,setSelectedOnly]=useState(false)
     return (<SafeAreaView style={styles.container}>
               <StatusBar style="auto" />
@@ -35,7 +35,6 @@ export default function App() {
                          onSwipeRight={(id)=>{
                              db.deleteItem(id);
                              setListItems((items)=>{const {[id]:omit,...newItems}=items;return newItems;})
-
                          }}
                          onPress={(id)=>{
                              db.toggleItem(id);
@@ -47,8 +46,8 @@ export default function App() {
               <NewItem onAdd={(text)=>{
                   db.addItem(text,(id)=> setListItems((items)=>{
                       return {...items, [id]:{id:id,title:text,selected:1}}
-                  }));
-                  flatList.current.scrollToEnd()
+                  }))
+                  setTimeout(()=>flatList.current.scrollToEnd(),100);
               }}/>
             </SafeAreaView>
            );
