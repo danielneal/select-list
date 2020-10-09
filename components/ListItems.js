@@ -5,7 +5,7 @@ import { spacing, fontSize, palette} from '../style/constants'
 import {Swipeable} from 'react-native-gesture-handler'
 
 const ListItem = ({item}) => {
-    const renderLeftActions=(progress,transX)=>
+    const renderLeftActions=(_progress,_transX)=>
           (<View style={styles.leftActions}>
              <Text style={styles.leftActionsText}>Delete item</Text>
            </View>)
@@ -28,7 +28,7 @@ export const ListItems = forwardRef((props,ref) => {
             flatList.current.scrollToEnd();
         }
     }),[flatList]);
-    const data=props.items
+    const data=Object.values(props.items)
           .filter(item=>item.selected===1||props.selectedOnly===false)
           .map((item)=>Object.assign(item,{onPress:props.onPress,onSwipeRight:props.onSwipeRight}))
     const renderLeftActions=(progress,dragX) => {return <View style={{backgroundColor:"blue"}}/>}

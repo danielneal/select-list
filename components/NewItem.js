@@ -6,10 +6,12 @@ import { spacing, fontSize, palette, borderRadius} from '../style/constants'
 export const NewItem = (props) => {
     const [text,setText]=useState("")
     const input = useRef()
+    const canAdd=text.length>0
     return <View style={styles.container}>
              <TextInput ref={input} onChangeText={(text)=>setText(text)} placeholder="Add new item" style={styles.textInput}/>
              <View style={styles.buttonContainer}>
-               <TouchableOpacity onPress={()=>{props.onAdd(text);input.current.clear()}} style={styles.button}>
+               <TouchableOpacity onPress={ canAdd? ()=>{
+                   props.onAdd(text);setText(""),input.current.clear()}:()=>{}} style={styles.button}>
                  <Text style={styles.buttonText}>Add</Text>
                  <FontAwesome style={styles.icon} name="plus-circle" size={32} color="black" />
                </TouchableOpacity>

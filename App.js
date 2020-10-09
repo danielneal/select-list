@@ -7,14 +7,15 @@ import {Selector} from './components/Selector'
 import {NewItem} from './components/NewItem'
 
 export default function App() {
-    const [listItems,setListItems]=useState([]);
-    const [refreshList, setRefreshList]=useState(0);
-    const refresh=()=>setRefreshList((i)=>i+1);
+    const [listItems,setListItems]=useState({});
     const flatList=useRef()
-    useEffect(()=>db.migrate(),[]);
-    useEffect(()=>db.getListItems((items)=>{
-        setListItems(items)
-    }),[refreshList]);
+    useEffect(()=>{
+        console.log('initialising')
+        db.migrate();
+        db.getListItems((items)=>{
+            setListItems(items)
+        })},[]);
+    console.log(listItems);
     const [selectedOnly,setSelectedOnly]=useState(false)
     return (<SafeAreaView style={styles.container}>
               <StatusBar style="auto" />
@@ -33,16 +34,21 @@ export default function App() {
                          selectedOnly={selectedOnly}
                          onSwipeRight={(id)=>{
                              db.deleteItem(id);
-                             refresh()
+                             setListItems((items)=>{const {[id]:omit,...newItems}=items;return newItems;})
+
                          }}
                          onPress={(id)=>{
                              db.toggleItem(id);
-                             refresh()
+                             setListItems((items)=>{
+                                 const item=items[id];
+                                 item.selected=item.selected===1?0:1
+                                 return {[id]:item,...items}})
                          }}/>
               <NewItem onAdd={(text)=>{
-                  db.addItem(text)
-                  refresh();
-                  setTimeout(()=>flatList.current.scrollToEnd(),200)
+                  db.addItem(text,(id)=> setListItems((items)=>{
+                      return {...items, [id]:{id:id,title:text,selected:1}}
+                  }));
+                  flatList.current.scrollToEnd()
               }}/>
             </SafeAreaView>
            );

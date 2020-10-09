@@ -11,7 +11,8 @@ export const migrate = () => {
 export const getListItems = (callback) => {
     db.transaction(tx => {
         tx.executeSql('select * from list_items',null,(tx,items)=>{
-            callback(items.rows._array)
+            const obj=items.rows._array.reduce((acc,item)=>{acc[item.id]=item; return acc},{})
+            callback(obj)
         })})
 }
 
@@ -27,8 +28,10 @@ export const deleteItem = (id) => {
     })
 }
 
-export const addItem = (text) => {
+export const addItem = (text,callback) => {
     db.transaction(tx => {
-        tx.executeSql('insert into list_items(selected,title) values (1,?)',[text])
+        tx.executeSql('insert into list_items(selected,title) values (1,?)',[text],(tx,items)=> {
+            callback(items.insertId);
+        })
     })
 }
