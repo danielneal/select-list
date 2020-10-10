@@ -7,7 +7,6 @@ import {Selector} from './components/Selector'
 import {NewItem} from './components/NewItem'
 import {Title} from './components/Title'
 import {EmptyList} from './components/EmptyList'
-import {usePrevious} from './hooks/usePrevious'
 
 export default function App() {
     const [listItems,setListItems]=useState({});
