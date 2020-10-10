@@ -39,3 +39,7 @@ export const palette = {
     brand1:"#f54298",
     brand2:"#f5abcf"
 }
+
+export const fonts = {
+    primary:'Avenir Next'
+}

@@ -23,12 +23,17 @@ const styles = StyleSheet.create({
     item: {
         paddingHorizontal:spacing.sp3,
         paddingVertical:spacing.sp2,
+        borderWidth:2,
+        marginRight:spacing.sp2,
+        borderColor:palette.ui0,
         borderRadius:borderRadius.br3
     },
     selectedItem: {
+        borderColor:palette.brand1,
         backgroundColor:palette.brand1,
     },
     itemText: {
+        fontFamily:'Avenir Next',
         fontSize:fontSize.f6,
         color:palette.ui0
     },
