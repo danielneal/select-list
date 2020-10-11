@@ -12,7 +12,6 @@ export default function App() {
     const [listItems,setListItems]=useState({});
     const flatList=useRef()
     useEffect(()=>{
-        console.log('initialising')
         db.migrate();
         db.getListItems((items)=>{
             setListItems(items)

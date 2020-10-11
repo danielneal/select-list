@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        padding:spacing.sp2
+        padding:spacing.sp1
     },
     item: {
         paddingHorizontal:spacing.sp3,
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     },
     itemText: {
         fontFamily:'Avenir Next',
-        fontSize:fontSize.f6,
+        fontSize:fontSize.f5,
         color:palette.ui0
     },
     selectedItemText:{

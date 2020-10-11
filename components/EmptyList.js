@@ -5,7 +5,7 @@ import { StyleSheet, View, Text } from 'react-native'
 export const EmptyList = (props) => {
     return (<View style={styles.container}>
             <Text style={styles.text}>
-            {props.selectedOnly==1? 'List of selected items is empty, choose some items from the All tab to show here':'List is empty, add some items using the input below to show here'}
+            {props.selectedOnly==1? 'List of selected items is empty. \n\nChoose some items from the \'All\' tab to show here':'List is empty.\n Add items using the input below. \n\nSwipe right to delete items.'}
             </Text>
             </View>)
 }

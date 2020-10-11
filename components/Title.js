@@ -5,7 +5,7 @@ import { StyleSheet, View, Text } from 'react-native'
 export const Title = () => {
     return (<View style={styles.container}>
             <Text style={styles.titleText}>
-            Short List
+            Select List
             </Text>
             </View>)
 }

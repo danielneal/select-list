@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Short List",
-    "slug": "shortlist",
+    "name": "Select List",
+    "slug": "select-list",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,7 +17,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false
     },
     "web": {
       "favicon": "./assets/favicon.png"

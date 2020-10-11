@@ -24,7 +24,7 @@ export const NewItem = (props) => {
 const styles = StyleSheet.create({
     textInput: {
         fontFamily:fonts.primary,
-        fontSize:fontSize.f6,
+        fontSize:fontSize.f5,
         padding:spacing.sp3
     },
     container: {
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontFamily:fonts.primary,
-        fontSize:fontSize.f6,
+        fontSize:fontSize.f5,
     },
     buttonContainer: {
         flexDirection:'row',
