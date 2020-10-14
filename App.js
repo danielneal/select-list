@@ -44,7 +44,6 @@ export default function App() {
     const deselectAll= () => {
         db.deselectAll();
         setListItems((items)=> {
-            console.log(items)
             return Util.mapVals(items,((item)=>{return {...item,selected:0}}))
         })
     }
