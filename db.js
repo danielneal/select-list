@@ -40,6 +40,12 @@ export const deselectAll = (id) => {
     })
 }
 
+export const removeAll = () => {
+    db.transaction(tx => {
+        tx.executeSql('delete from list_items')
+    })
+}
+
 export const addItem = (text,callback) => {
     db.transaction(tx => {
         tx.executeSql('insert into list_items(selected,title) values (1,?)',[text],(tx,items)=> {

@@ -47,6 +47,12 @@ export default function App() {
             return Util.mapVals(items,((item)=>{return {...item,selected:0}}))
         })
     }
+    const removeAll= () => {
+        db.removeAll();
+        setListItems((items)=> {
+            return {}
+        })
+    }
     const showPrivacyPolicy= () => {
         Linking.openURL('http://select-list.co.uk.s3.eu-west-2.amazonaws.com/privacy-policy.html');
     }
@@ -61,7 +67,8 @@ export default function App() {
               <Menu menuOpen={menuOpen}
                     selectAll={selectAll}
                     deselectAll={deselectAll}
-                    showPrivacyPolicy={showPrivacyPolicy}/>
+                    showPrivacyPolicy={showPrivacyPolicy}
+                    removeAll={removeAll}/>
               <Title toggleMenu={()=>setMenuOpen((menuOpen)=>!menuOpen)}/>
               <Selector items={[{id:1,title:"All"},
                                 {id:0,title:"Selected"}]}
