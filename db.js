@@ -28,6 +28,18 @@ export const deleteItem = (id) => {
     })
 }
 
+export const selectAll = (id) => {
+    db.transaction(tx => {
+        tx.executeSql('update list_items set selected=1')
+    })
+}
+
+export const deselectAll = (id) => {
+    db.transaction(tx => {
+        tx.executeSql('update list_items set selected=0')
+    })
+}
+
 export const addItem = (text,callback) => {
     db.transaction(tx => {
         tx.executeSql('insert into list_items(selected,title) values (1,?)',[text],(tx,items)=> {

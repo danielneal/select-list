@@ -1,21 +1,27 @@
 import React from 'react'
 import { fontSize, fonts, spacing, palette } from '../style/constants'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { MaterialIcons } from '@expo/vector-icons';
 
-export const Title = () => {
+export const Title = (props) => {
     return (<View style={styles.container}>
-            <Text style={styles.titleText}>
-            Select List
-            </Text>
+              <Text style={styles.titleText}>
+                Select List
+              </Text>
+              <TouchableOpacity onPress={props.toggleMenu}>
+                <MaterialIcons name="menu" size={32} color="black" />
+              </TouchableOpacity>
             </View>)
 }
 
 const styles = StyleSheet.create({
     container: {
         width:"100%",
+        flexDirection:'row',
         alignItems:'center',
-        justifyContent:'center',
-        padding:spacing.sp2
+        justifyContent:'space-between',
+        padding:spacing.sp2,
+        zIndex:2
     },
     titleText: {
         color:palette.ui0,
