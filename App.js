@@ -66,7 +66,6 @@ export default function App() {
 
     // refresh the list of items on startup and after inserting a new item
     useEffect(() => {
-        console.log('refreshing')
         if(state.refresh){
             db.getListItems((items) =>  {
                 dispatch({type:'setListItems',items:items})
@@ -95,11 +94,11 @@ export default function App() {
               <Menu menuOpen={state.menuOpen}
                     dispatch={dispatch}/>
               <Title dispatch={dispatch}/>
+              {listView}
               <Selector items={[{id:1,title:"All"},
                                 {id:0,title:"Selected"}]}
                         selectedId={state.selectedOnly?0:1}
                         dispatch={dispatch}/>
-              {listView}
               <NewItem dispatch={dispatch}/>
             </SafeAreaView>);
 }
