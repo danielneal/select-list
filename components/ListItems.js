@@ -24,13 +24,16 @@ const ListItem = ({item}) => {
 }
 
 export const ListItems = forwardRef((props,ref) => {
+    const dispatch=props.dispatch
+    const onSwipeRight=(id)=>dispatch({type:'deleteItem',id:id})
+    const onPress=(id)=>dispatch({type:'toggleItem',id:id})
     const flatList=useRef()
     useImperativeHandle(ref, () => ({
         scrollToEnd: () => {
             flatList.current.scrollToEnd();
         }
     }),[flatList]);
-    const data=props.items.map((item)=>Object.assign(item,{onPress:props.onPress,onSwipeRight:props.onSwipeRight}))
+    const data=props.items.map((item)=>Object.assign(item,{onPress:onPress,onSwipeRight:onSwipeRight}))
     const renderLeftActions=(progress,dragX) => {return <View style={{backgroundColor:"blue"}}/>}
     return <FlatList ref={flatList} style={styles.flatList} data={data} renderItem={ListItem} keyExtractor={(item) => `list-item-${item.id}`}/>
 })

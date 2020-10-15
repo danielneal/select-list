@@ -5,15 +5,18 @@ import { spacing, fontSize, palette, borderRadius, fonts} from '../style/constan
 import { useKeyboard } from '@react-native-community/hooks'
 
 export const NewItem = (props) => {
+    const dispatch=props.dispatch
     const [text,setText]=useState("")
     const input = useRef()
     const canAdd=text.length>0
+    const onAdd=(text)=>{dispatch({type:'addItem',text:text});setText("");input.current.clear()}
     const keyboard=useKeyboard()
+
     return <View style={[styles.container,keyboard.keyboardShown?{paddingBottom:keyboard.keyboardHeight}:{}]}>
              <TextInput ref={input} onChangeText={(text)=>setText(text)} placeholder="Add new item" style={styles.textInput}/>
              <View style={styles.buttonContainer}>
-               <TouchableOpacity onPress={ canAdd? ()=>{
-                   props.onAdd(text);setText(""),input.current.clear()}:()=>{}} style={styles.button}>
+               <TouchableOpacity onPress={ canAdd ? () => {
+                   onAdd(text);setText(""),input.current.clear()}:()=>{}} style={styles.button}>
                  <Text style={[styles.buttonText,canAdd?styles.addEnabled:styles.addDisabled]}>Add</Text>
                  <FontAwesome style={[styles.icon,canAdd?styles.addEnabled:styles.addDisabled]} name="plus-circle" size={32} color="black" />
                </TouchableOpacity>

@@ -4,12 +4,15 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons';
 
 export const Title = (props) => {
+    const dispatch = props.dispatch
+    const onPress = () => dispatch({type:'toggleMenuOpen'})
+
     return (<View style={styles.container}>
               <Text style={styles.titleText}>
                 Select List
               </Text>
-              <TouchableOpacity onPress={props.toggleMenu}>
-                <MaterialIcons name="menu" size={32} color="black" />
+              <TouchableOpacity onPress={onPress}>
+                <MaterialIcons name="menu" size={32} color="black"/>
               </TouchableOpacity>
             </View>)
 }

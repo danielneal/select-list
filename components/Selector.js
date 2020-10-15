@@ -3,13 +3,16 @@ import { StyleSheet, Text, View, TouchableOpacity} from 'react-native'
 import {spacing, fontSize, palette, borderRadius} from '../style/constants'
 
 export const Selector = (props) => {
-    return(<View style={styles.container}>
-             {props.items
-              .map(item=>
-                   <TouchableOpacity key={item.id} style={[styles.item,item.id===props.selectedId?styles.selectedItem:{}]} onPress={()=>props.onPress(item.id)}>
-                     <Text style={[styles.itemText,item.id===props.selectedId?styles.selectedItemText:{}]}>{item.title}</Text>
-                   </TouchableOpacity>)}
-           </View>)
+    const dispatch = props.dispatch
+    const onPress= (id) => { dispatch({type:'setSelectedOnly',selectedOnly:id===0?true:false})}
+
+    return (<View style={styles.container}>
+              {props.items
+               .map(item=>
+                    <TouchableOpacity key={item.id} style={[styles.item,item.id===props.selectedId?styles.selectedItem:{}]} onPress={() => onPress(item.id)}>
+                      <Text style={[styles.itemText,item.id===props.selectedId?styles.selectedItemText:{}]}>{item.title}</Text>
+                    </TouchableOpacity>)}
+            </View>)
 }
 
 const styles = StyleSheet.create({
@@ -40,5 +43,4 @@ const styles = StyleSheet.create({
     selectedItemText:{
         color:palette.ui5,
     }
-
 });

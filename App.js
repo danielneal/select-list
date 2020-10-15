@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React,{useEffect,useState,useRef} from 'react'
+import React,{ useEffect, useState, useRef, useReducer } from 'react'
 import * as db from './db'
 import { SafeAreaView, ScrollView, StyleSheet, Text, View, Linking } from 'react-native'
 import { ListItems } from './components/ListItems'
@@ -11,82 +11,96 @@ import { AppLoading } from 'expo';
 import { Menu } from './components/Menu'
 import * as Util from './util'
 
-export default function App() {
-    const [listItems,setListItems]=useState({});
-    const [loaded,setLoaded]=useState(false);
-    const flatList=useRef()
-    useEffect(()=>{
-        db.migrate();
-        db.getListItems((items)=>{
-            setListItems(items)
-            setLoaded(true)
-        })},[]);
-    const [selectedOnly,setSelectedOnly]=useState(false)
-    const [menuOpen,setMenuOpen]=useState(false)
-    const items=Object.values(listItems).filter(item=>item.selected===1||selectedOnly===false)
-    const deleteItem=((id)=>{
-        db.deleteItem(id);
-        setListItems((items)=>{const {[id]:omit,...newItems}=items;return})
-    })
-    const toggleItem = (id)=>{
-        db.toggleItem(id);
-        setListItems((items)=>{
-            const item=items[id];
-            item.selected=item.selected===1?0:1
-            return {[id]:item,...items}})
-    }
-    const selectAll = () => {
+const reducer=(state, action) => {
+    switch(action.type) {
+    case 'appLoaded':
+        return {...state,loaded:true}
+
+    case 'setListItems':
+        return {...state,refresh:false,items:action.items}
+
+    case 'toggleMenuOpen':
+        return {...state,menuOpen:!state.menuOpen}
+
+    case 'setSelectedOnly':
+        return {...state,selectedOnly:action.selectedOnly}
+
+    case 'deleteItem':
+        db.deleteItem(action.id);
+        return {...state,refresh:true}
+
+    case 'toggleItem':
+        db.toggleItem(action.id);
+        return {...state,refresh:true}
+
+    case 'selectAll':
         db.selectAll();
-        setListItems((items)=> {
-            return Util.mapVals(items,((item)=>{return {...item,selected:1}}))
-        })
-    }
-    const deselectAll= () => {
+        return {...state,refresh:true}
+
+    case 'deselectAll':
         db.deselectAll();
-        setListItems((items)=> {
-            return Util.mapVals(items,((item)=>{return {...item,selected:0}}))
-        })
-    }
-    const removeAll= () => {
+        return {...state,refresh:true}
+
+    case 'removeAll':
         db.removeAll();
-        setListItems((items)=> {
-            return {}
-        })
-    }
-    const showPrivacyPolicy= () => {
+        return {...state,refresh:true}
+
+    case 'addItem':
+        db.addItem(action.text)
+        return {...state,refresh:true}
+
+    case 'showPrivacyPolicy':
         Linking.openURL('http://select-list.co.uk.s3.eu-west-2.amazonaws.com/privacy-policy.html');
+        return state
     }
-    const listView=items.length>0?
-          <ListItems items={items}
+}
+
+export default function App() {
+
+    const [ state, dispatch ] = useReducer(reducer, {refresh:true,selectedOnly:false})
+
+    // migrate the database on startup
+    useEffect(() => {
+        db.migrate()
+    },[])
+
+    // refresh the list of items on startup and after inserting a new item
+    useEffect(() => {
+        console.log('refreshing')
+        if(state.refresh){
+            db.getListItems((items) =>  {
+                dispatch({type:'setListItems',items:items})
+            })
+        }},[state.refresh])
+
+    // if we have the list items, we're loaded
+    useEffect(() => {
+        if(!state.loaded && state.items) {
+            dispatch({type:'appLoaded'})
+        }
+    },[state.refresh,state.items])
+
+    const visibleItems = state.items ? state.items.filter(item=>item.selected===1||state.selectedOnly===false) : []
+
+    const flatList = useRef()
+
+    const listView = visibleItems.length>0?
+          <ListItems items={visibleItems}
                      ref={flatList}
-                     onSwipeRight={(id)=>deleteItem(id)}
-                     onPress={(id)=>toggleItem(id)}/> : <EmptyList selectedOnly={selectedOnly}/>
-    return (!loaded? <AppLoading/> :
+                     dispatch={dispatch}/> : <EmptyList selectedOnly={state.selectedOnly}/>
+
+    return (!state.loaded? <AppLoading/> :
             <SafeAreaView style={styles.container}>
               <StatusBar style="auto" />
-              <Menu menuOpen={menuOpen}
-                    selectAll={selectAll}
-                    deselectAll={deselectAll}
-                    showPrivacyPolicy={showPrivacyPolicy}
-                    removeAll={removeAll}/>
-              <Title toggleMenu={()=>setMenuOpen((menuOpen)=>!menuOpen)}/>
+              <Menu menuOpen={state.menuOpen}
+                    dispatch={dispatch}/>
+              <Title dispatch={dispatch}/>
               <Selector items={[{id:1,title:"All"},
                                 {id:0,title:"Selected"}]}
-                        selectedId={selectedOnly?0:1}
-                        onPress={(id)=>{
-                            if(id===0){
-                                setSelectedOnly(true)
-                            } else if (id===1) {
-                                setSelectedOnly(false)
-                            }
-                        }}/>
+                        selectedId={state.selectedOnly?0:1}
+                        dispatch={dispatch}/>
               {listView}
-              <NewItem onAdd={(text)=>{
-                  db.addItem(text,(id)=> setListItems((items)=>{
-                      return {...items, [id]:{id:id,title:text,selected:1}}
-                  }))
-                  setTimeout(()=>{if(flatList.current!==undefined){flatList.current.scrollToEnd()}},100);
-              }}/>
+              <NewItem dispatch={dispatch}/>
             </SafeAreaView>);
 }
 

@@ -13,6 +13,11 @@ const MenuItem = (props) => {
 }
 
 export const Menu = (props) => {
+    const dispatch=props.dispatch
+    const selectAll=()=>dispatch({type:'selectAll'})
+    const deselectAll=()=>dispatch({type:'deselectAll'})
+    const showPrivacyPolicy=()=>dispatch({type:'showPrivacyPolicy'})
+    const removeAll=()=>dispatch({type:'removeAll'})
     const menuYOffset=useRef(new Animated.Value(0)).current;
     useEffect(()=>{
         Animated.timing(menuYOffset, {
@@ -22,10 +27,10 @@ export const Menu = (props) => {
         }).start();
     },[props.menuOpen])
     return (<Animated.View style={[styles.container,{transform:[{translateY:menuYOffset}]}]}>
-              <MenuItem text="Select All" onPress={props.selectAll}/>
-              <MenuItem text="Deselect All" onPress={props.deselectAll}/>
-              <MenuItem text="Remove All" onPress={props.removeAll}/>
-              <MenuItem text="Privacy Policy" onPress={props.showPrivacyPolicy}/>
+              <MenuItem text="Select All" onPress={selectAll}/>
+              <MenuItem text="Deselect All" onPress={deselectAll}/>
+              <MenuItem text="Remove All" onPress={removeAll}/>
+              <MenuItem text="Privacy Policy" onPress={showPrivacyPolicy}/>
             </Animated.View>)
 }
 
